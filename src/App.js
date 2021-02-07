@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 
 import './App.css';
 import './Components/style.css';
-import Home from './Components/home';
-import Time from './Components/time';
-import Weather from './Components/weather';
-import Crypto from './Components/crypto';
+import Home from './Components/Home';
+import Time from './Components/Time';
+import Weather from './Components/Weather';
+import Crypto from './Components/Crypto';
 
 function App() {
 

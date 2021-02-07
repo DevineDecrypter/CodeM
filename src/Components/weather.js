@@ -21,16 +21,16 @@ function Weather(props) {
                 setWeather(result);
                 setCoord(result.coord);
             });
-            fetch(`${weather_uri}air_pollution?lat=${coord.lat}&lon=${coord.lon}&appid=${openweathermap}`)
-                .then(res => res.json())
-                .then(result => {
-                    const list = result.list[0].components;
-                    const objectArray = Object.entries(list);
-                    objectArray.forEach(([key, value]) => {
-                    setComponents(oldComponents => [...oldComponents, [key,value]]);
-                })
-            console.log('search done');
-            });
+            // fetch(`${weather_uri}air_pollution?lat=${coord.lat}&lon=${coord.lon}&appid=${openweathermap}`)
+            //     .then(res => res.json())
+            //     .then(result => {
+            //         const list = result.list[0].components;
+            //         const objectArray = Object.entries(list);
+            //         objectArray.forEach(([key, value]) => {
+            //         setComponents(oldComponents => [...oldComponents, [key,value]]);
+            //     })
+            // console.log('search done');
+            // });
     }
 
     let render;
@@ -43,7 +43,7 @@ function Weather(props) {
             <h2>Temprature: {weather.main.temp}°c // feels like {weather.main.feels_like}°c // minimum temp: {weather.main.temp_min}°c // maximum temp: {weather.main.temp_max}°c</h2>
             <p>Pressure: {weather.main.pressure} // Weather: {weather.weather[0].main}</p>
             <hr/>
-            <h2>Pollution: {components.map(item => <p key={item}>{item[0]}: {item[1]}</p>)}</h2>
+            {/* <h2>Pollution: {components.map(item => <p key={item}>{item[0]}: {item[1]}</p>)}</h2> */}
          </div>)
     }
 
