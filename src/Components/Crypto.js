@@ -25,16 +25,13 @@ function Crypto(props) {
         coin.name.toLowerCase().includes(search.toLowerCase())
     )
 
-
-    return (
-            <div className="coin-app">
-                <div className="coin-search">
-                    <h1 className="coin-text">Search a Currency</h1>
-                    <form onSubmit={(e) => e.preventDefault()}>
-                        <input onChange={handleChange} value={search} type="text" placeholder="Search..." className="coin-input"/>
-                    </form>
-                </div>
-                {filteredCoins.map(coin => {
+    let render;
+    
+    if (coins.length === 0) {
+        render = <h1>Loading...</h1>
+    } else {
+        render = (<div>
+            {filteredCoins.map(coin => {
                     return (
                         <Coin 
                             key={coin.id} 
@@ -48,6 +45,18 @@ function Crypto(props) {
                             
                     )
                 })}
+        </div>)
+    }
+
+    return (
+            <div className="coin-app">
+                <div className="coin-search">
+                    <h1 className="coin-text">Search a Currency</h1>
+                    <form onSubmit={(e) => e.preventDefault()}>
+                        <input onChange={handleChange} value={search} type="text" placeholder="Search..." className="coin-input"/>
+                    </form>
+                </div>
+                {render}
                 <button className="coin-home" onClick={() => props.clicked('Home')}>Home</button>
             </div>
     )
