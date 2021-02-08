@@ -12,6 +12,11 @@ function Weather(props) {
     const [weather, setWeather] = useState({});
     const [components, setComponents] = useState([]);
 
+    const search = () => {
+        setComponents([]);
+        citySearchHandler();
+    }
+
     const citySearchHandler = async () => {
         const air = await axios.get(`${weather_uri}weather?q=${city}&units=metric&appid=${openweathermap}`)
         const pollution = await axios.get(`${weather_uri}air_pollution?lat=${air.data.coord.lat}&lon=${air.data.coord.lon}&appid=${openweathermap}`)
@@ -19,12 +24,7 @@ function Weather(props) {
         objectArray.forEach(([key, value]) => {
         setComponents(oldComponents => [...oldComponents, [key,value]]);})
         setWeather(air.data);
-        // fetch(`${weather_uri}weather?q=${city}&units=metric&appid=${openweathermap}`)
-            // .then(res => res.json())
-            // .then(result => {
-            //     setCity('');
-            //     setWeather(result);
-            // });
+        
     }
 
     let render;
@@ -43,8 +43,9 @@ function Weather(props) {
 
     return (
         <div className="style">
+            <h1>Weather</h1>
             <input placeholder="Search City..." value={city} onChange={(e) => setCity(e.target.value)} />
-            <button onClick={citySearchHandler} disabled={!city}>Search</button>
+            <button onClick={search} disabled={!city}>Search</button>
             {render}
             <button onClick={() => props.clicked('Home')}>Home</button>
         </div>
