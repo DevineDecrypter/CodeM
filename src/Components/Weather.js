@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import axios from 'axios';
 
 import './style.css';
 import { openweathermap } from '../ApiKeys';
@@ -9,27 +10,20 @@ function Weather(props) {
 
     const [city, setCity] = useState('');
     const [weather, setWeather] = useState({});
-    const [coord,setCoord] = useState({});
     const [components, setComponents] = useState([]);
 
-    const citySearchHandler = event => {
-            setComponents([]);
-            fetch(`${weather_uri}weather?q=${city}&units=metric&appid=${openweathermap}`)
-            .then(res => res.json())
-            .then(result => {
-                setCity('');
-                setWeather(result);
-                setCoord(result.coord);
-            });
-            // fetch(`${weather_uri}air_pollution?lat=${coord.lat}&lon=${coord.lon}&appid=${openweathermap}`)
-            //     .then(res => res.json())
-            //     .then(result => {
-            //         const list = result.list[0].components;
-            //         const objectArray = Object.entries(list);
-            //         objectArray.forEach(([key, value]) => {
-            //         setComponents(oldComponents => [...oldComponents, [key,value]]);
-            //     })
-            // console.log('search done');
+    const citySearchHandler = async () => {
+        const air = await axios.get(`${weather_uri}weather?q=${city}&units=metric&appid=${openweathermap}`)
+        const pollution = await axios.get(`${weather_uri}air_pollution?lat=${air.data.coord.lat}&lon=${air.data.coord.lon}&appid=${openweathermap}`)
+        const objectArray = Object.entries(pollution.data.list[0].components);
+        objectArray.forEach(([key, value]) => {
+        setComponents(oldComponents => [...oldComponents, [key,value]]);})
+        setWeather(air.data);
+        // fetch(`${weather_uri}weather?q=${city}&units=metric&appid=${openweathermap}`)
+            // .then(res => res.json())
+            // .then(result => {
+            //     setCity('');
+            //     setWeather(result);
             // });
     }
 
@@ -43,7 +37,7 @@ function Weather(props) {
             <h2>Temprature: {weather.main.temp}°c // feels like {weather.main.feels_like}°c // minimum temp: {weather.main.temp_min}°c // maximum temp: {weather.main.temp_max}°c</h2>
             <p>Pressure: {weather.main.pressure} // Weather: {weather.weather[0].main}</p>
             <hr/>
-            {/* <h2>Pollution: {components.map(item => <p key={item}>{item[0]}: {item[1]}</p>)}</h2> */}
+            <h2>Pollution: {components.map(item => <p key={item}>{item[0]}: {item[1]}</p>)}</h2>
          </div>)
     }
 
